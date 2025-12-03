@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Önerilen Egzersizlerim";
+}
+
+<h2>Önerilen Egzersizlerim</h2>
+
+<p>
+    Profil bilgilerinizi güncellemek için
+    <a asp-controller="MemberProfile" asp-action="Index">Profilim</a>
+    sayfasını kullanabilirsiniz.
+</p>
+
+<div class="card mt-3">
+    <div class="card-body" style="white-space: pre-line;">
+        @ViewBag.Plan
+    </div>
+</div>

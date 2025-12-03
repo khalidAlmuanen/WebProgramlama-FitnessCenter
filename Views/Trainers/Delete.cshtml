@@ -1,0 +1,27 @@
+@model FitnessCenterApp.Models.Trainer
+
+@{
+    ViewData["Title"] = "Antrenör Sil";
+}
+
+<h1>Antrenör Sil</h1>
+<hr />
+
+<h3>Bu antrenörü silmek istediğinize emin misiniz?</h3>
+
+<dl class="row mt-3">
+    <dt class="col-sm-3">Ad Soyad</dt>
+    <dd class="col-sm-9">@Model.FullName</dd>
+
+    <dt class="col-sm-3">Spor Salonu</dt>
+    <dd class="col-sm-9">@Model.Gym?.Name</dd>
+
+    <dt class="col-sm-3">Uzmanlık</dt>
+    <dd class="col-sm-9">@Model.Specialization</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">Vazgeç</a>
+</form>

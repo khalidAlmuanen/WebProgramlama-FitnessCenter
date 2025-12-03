@@ -1,0 +1,45 @@
+@model IEnumerable<FitnessCenterApp.Models.Trainer>
+
+@{
+    ViewData["Title"] = "Antrenörler";
+}
+
+<h1>Antrenörler</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Yeni Antrenör Ekle</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Ad Soyad</th>
+            <th>Uzmanlık</th>
+            <th>Spor Salonu</th>
+            <th>Ana Hizmet</th>
+            <th>Deneyim (Yıl)</th>
+            <th>Puan</th>
+            <th>Randevu Sayısı</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+        <tr>
+            <td>@item.FullName</td>
+            <td>@item.Specialization</td>
+            <td>@item.Gym?.Name</td>
+            <td>@item.Service?.Name</td>
+            <td>@(item.ExperienceYears ?? 0)</td>
+            <td>@(item.Rating ?? 0)</td>
+            <td>@(item.Appointments?.Count ?? 0)</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Detay</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Düzenle</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Sil</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

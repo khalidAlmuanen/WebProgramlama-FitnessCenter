@@ -1,0 +1,69 @@
+@model FitnessCenterApp.Models.Trainer
+
+@{
+    ViewData["Title"] = "Antrenör Düzenle";
+}
+
+<h1>Antrenör Düzenle</h1>
+<hr />
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Specialization" class="form-label"></label>
+                <input asp-for="Specialization" class="form-control" placeholder="Örn: Kas Geliştirme, Kilo Verme, Yoga" />
+                <span asp-validation-for="Specialization" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="GymId" class="form-label"></label>
+                <select asp-for="GymId" class="form-select" asp-items="ViewBag.GymId">
+                    <option value="">Spor salonu seçiniz</option>
+                </select>
+                <span asp-validation-for="GymId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ServiceId" class="form-label"></label>
+                <select asp-for="ServiceId" class="form-select" asp-items="ViewBag.ServiceId">
+                    <option value="">Ana hizmet seçiniz (opsiyonel)</option>
+                </select>
+                <span asp-validation-for="ServiceId" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="mb-3">
+                <label asp-for="ExperienceYears" class="form-label"></label>
+                <input asp-for="ExperienceYears" class="form-control" />
+                <span asp-validation-for="ExperienceYears" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Rating" class="form-label"></label>
+                <input asp-for="Rating" class="form-control" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+    <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

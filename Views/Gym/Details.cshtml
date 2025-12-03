@@ -1,0 +1,65 @@
+@model FitnessCenterApp.Models.Gym
+
+@{
+    ViewData["Title"] = "Spor Salonu Detayı";
+}
+
+<h2>Spor Salonu Detayı</h2>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Salon Adı</dt>
+            <dd class="col-sm-9">@Model.Name</dd>
+
+            <dt class="col-sm-3">Konum</dt>
+            <dd class="col-sm-9">@Model.Location</dd>
+
+            <dt class="col-sm-3">Açıklama</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+
+            <dt class="col-sm-3">Açılış Saati</dt>
+            <dd class="col-sm-9">@Model.OpeningTime</dd>
+
+            <dt class="col-sm-3">Kapanış Saati</dt>
+            <dd class="col-sm-9">@Model.ClosingTime</dd>
+
+            <dt class="col-sm-3">Hizmetler</dt>
+            <dd class="col-sm-9">
+                @if (Model.Services != null && Model.Services.Any())
+                {
+                    <ul>
+                        @foreach (var s in Model.Services)
+                        {
+                            <li>@s.Name (@s.Price.ToString("0.00") ₺)</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <span>Bu salona ait kayıtlı hizmet yok.</span>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Eğitmenler</dt>
+            <dd class="col-sm-9">
+                @if (Model.Trainers != null && Model.Trainers.Any())
+                {
+                    <ul>
+                        @foreach (var t in Model.Trainers)
+                        {
+                            <li>@t.FullName</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <span>Bu salona ait kayıtlı eğitmen yok.</span>
+                }
+            </dd>
+        </dl>
+
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Düzenle</a>
+        <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+    </div>
+</div>

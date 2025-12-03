@@ -1,0 +1,58 @@
+@model FitnessCenterApp.Models.TrainerAvailability
+
+@{
+    ViewData["Title"] = "Müsaitlik Düzenle";
+}
+
+<h2>Müsaitlik Düzenle</h2>
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="TrainerId" class="form-label"></label>
+        <select asp-for="TrainerId" class="form-select" asp-items="ViewBag.TrainerId">
+            <option value="">Antrenör seçiniz</option>
+        </select>
+        <span asp-validation-for="TrainerId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Day" class="form-label"></label>
+        <select asp-for="Day" class="form-select">
+        <option value="Sunday">Pazar</option>
+        <option value="Monday">Pazartesi</option>
+        <option value="Tuesday">Salı</option>
+        <option value="Wednesday">Çarşamba</option>
+        <option value="Thursday">Perşembe</option>
+        <option value="Friday">Cuma</option>
+        <option value="Saturday">Cumartesi</option>
+        </select>
+        <span asp-validation-for="Day" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="StartTime" class="form-label"></label>
+        <input asp-for="StartTime" class="form-control" type="time" />
+        <span asp-validation-for="StartTime" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="EndTime" class="form-label"></label>
+        <input asp-for="EndTime" class="form-control" type="time" />
+        <span asp-validation-for="EndTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label"></label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+    <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,45 @@
+@model FitnessCenterApp.Models.Trainer
+
+@{
+    ViewData["Title"] = "Antrenör Detayı";
+}
+
+<h1>Antrenör Detayı</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Ad Soyad</dt>
+    <dd class="col-sm-9">@Model.FullName</dd>
+
+    <dt class="col-sm-3">Uzmanlık</dt>
+    <dd class="col-sm-9">@Model.Specialization</dd>
+
+    <dt class="col-sm-3">Spor Salonu</dt>
+    <dd class="col-sm-9">@Model.Gym?.Name</dd>
+
+    <dt class="col-sm-3">Ana Hizmet</dt>
+    <dd class="col-sm-9">@Model.Service?.Name</dd>
+
+    <dt class="col-sm-3">Deneyim (Yıl)</dt>
+    <dd class="col-sm-9">@Model.ExperienceYears</dd>
+
+    <dt class="col-sm-3">Puan</dt>
+    <dd class="col-sm-9">@Model.Rating</dd>
+
+    <dt class="col-sm-3">Randevu Sayısı</dt>
+    <dd class="col-sm-9">@Model.Appointments?.Count</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Düzenle</a>
+<a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+
+<a asp-controller="TrainerAvailability" asp-action="Index" asp-route-trainerId="@Model.Id" class="btn btn-outline-primary">
+    Müsaitlikleri Yönet
+</a>
+
+<a asp-controller="Appointment"
+   asp-action="Create"
+   asp-route-trainerId="@Model.Id"
+   class="btn btn-outline-success">
+    Randevu Oluştur
+</a>

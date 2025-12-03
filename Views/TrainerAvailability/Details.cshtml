@@ -1,0 +1,33 @@
+@model FitnessCenterApp.Models.TrainerAvailability
+
+@{
+    ViewData["Title"] = "Müsaitlik Detayı";
+}
+
+<h2>Müsaitlik Detayı</h2>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Antrenör</dt>
+    <dd class="col-sm-9">@Model.Trainer?.FullName</dd>
+
+    <dt class="col-sm-3">Spor Salonu</dt>
+    <dd class="col-sm-9">@Model.Trainer?.Gym?.Name</dd>
+
+    <dt class="col-sm-3">Gün</dt>
+    <dd class="col-sm-9">@Model.Day</dd>
+
+    <dt class="col-sm-3">Başlangıç Saati</dt>
+    <dd class="col-sm-9">@Model.StartTime.ToString(@"hh\:mm")</dd>
+
+    <dt class="col-sm-3">Bitiş Saati</dt>
+    <dd class="col-sm-9">@Model.EndTime.ToString(@"hh\:mm")</dd>
+
+    <dt class="col-sm-3">Aktif mi?</dt>
+    <dd class="col-sm-9">
+        @(Model.IsActive ? "Aktif" : "Pasif")
+    </dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Düzenle</a>
+<a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>

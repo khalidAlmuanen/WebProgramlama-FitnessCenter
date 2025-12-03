@@ -1,0 +1,48 @@
+@model IEnumerable<FitnessCenterApp.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Randevularım";
+}
+
+<h2>Randevularım</h2>
+
+@if (!Model.Any())
+{
+    <p>Henüz bir randevunuz yok.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tarih</th>
+                <th>Saat</th>
+                <th>Hizmet</th>
+                <th>Antrenör</th>
+                <th>Spor Salonu</th>
+                <th>Durum</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var a in Model)
+        {
+            string durum = a.Status switch
+            {
+                FitnessCenterApp.Models.AppointmentStatus.Pending  => "Beklemede",
+                FitnessCenterApp.Models.AppointmentStatus.Approved => "Onaylandı",
+                FitnessCenterApp.Models.AppointmentStatus.Rejected => "Reddedildi",
+                _ => a.Status.ToString()
+            };
+
+            <tr>
+                <td>@a.Date.ToString("dd.MM.yyyy")</td>
+                <td>@a.StartTime.ToString(@"hh\:mm") - @a.EndTime.ToString(@"hh\:mm")</td>
+                <td>@a.Service?.Name</td>
+                <td>@a.Trainer?.FullName</td>
+                <td>@a.Trainer?.Gym?.Name</td>
+                <td>@durum</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

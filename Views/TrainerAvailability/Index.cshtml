@@ -1,0 +1,84 @@
+@model IEnumerable<FitnessCenterApp.Models.TrainerAvailability>
+
+@{
+    ViewData["Title"] = "Antrenör Müsaitlikleri";
+}
+@functions {
+    string GetTurkishDay(DayOfWeek day)
+    {
+        return day switch
+        {
+            DayOfWeek.Monday => "Pazartesi",
+            DayOfWeek.Tuesday => "Salı",
+            DayOfWeek.Wednesday => "Çarşamba",
+            DayOfWeek.Thursday => "Perşembe",
+            DayOfWeek.Friday => "Cuma",
+            DayOfWeek.Saturday => "Cumartesi",
+            DayOfWeek.Sunday => "Pazar",
+            _ => ""
+        };
+    }
+}
+
+<h2>Antrenör Müsaitlikleri</h2>
+
+<form method="get" asp-action="Index" class="row g-3 mb-3">
+    <div class="col-md-4">
+        <label class="form-label">Antrenör Filtresi</label>
+        <select name="trainerId" class="form-select" asp-items="ViewBag.TrainerId">
+            <option value="">Tüm antrenörler</option>
+        </select>
+    </div>
+    <div class="col-md-3 align-self-end">
+        <button type="submit" class="btn btn-primary">Filtrele</button>
+        <a asp-action="Index" class="btn btn-secondary">Temizle</a>
+    </div>
+</form>
+
+@if (ViewBag.SelectedTrainer != null)
+{
+    <p><strong>Seçili Antrenör:</strong> @ViewBag.SelectedTrainer</p>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Yeni Müsaitlik Ekle</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Antrenör</th>
+            <th>Gün</th>
+            <th>Başlangıç</th>
+            <th>Bitiş</th>
+            <th>Aktif</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+        <tr>
+            <td>@item.Trainer?.FullName</td>
+            <td>@GetTurkishDay(item.Day)</td>
+            <td>@item.StartTime.ToString(@"hh\:mm")</td>
+            <td>@item.EndTime.ToString(@"hh\:mm")</td>
+            <td>
+                @if (item.IsActive)
+                {
+                    <span class="badge bg-success">Aktif</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Pasif</span>
+                }
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info text-white">Detay</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Düzenle</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Sil</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

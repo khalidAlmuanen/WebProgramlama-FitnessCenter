@@ -1,0 +1,32 @@
+@model FitnessCenterApp.Models.TrainerAvailability
+
+@{
+    ViewData["Title"] = "Müsaitlik Sil";
+}
+
+<h2>Müsaitlik Sil</h2>
+
+<h4>Bu müsaitlik kaydını silmek istediğinize emin misiniz?</h4>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Antrenör</dt>
+    <dd class="col-sm-9">@Model.Trainer?.FullName</dd>
+
+    <dt class="col-sm-3">Gün</dt>
+    <dd class="col-sm-9">@Model.Day</dd>
+
+    <dt class="col-sm-3">Saat</dt>
+    <dd class="col-sm-9">
+        @Model.StartTime.ToString(@"hh\:mm") - @Model.EndTime.ToString(@"hh\:mm")
+    </dd>
+
+    <dt class="col-sm-3">Aktif</dt>
+    <dd class="col-sm-9">@Model.IsActive</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">Vazgeç</a>
+</form>

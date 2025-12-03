@@ -1,0 +1,42 @@
+@model List<FitnessCenterApp.Models.BodyTransformRequest>
+
+@{
+    ViewData["Title"] = "Geçmiş Dönüşüm İsteklerim";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table table-bordered table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Tarih</th>
+            <th>Hedef</th>
+            <th>Süre</th>
+            <th>Tahmini Değişim</th>
+            <th>Önce</th>
+            <th>Sonuç</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.CreatedAt.ToString("dd.MM.yyyy")</td>
+            <td>@item.GoalType</td>
+            <td>@item.DurationMonths Ay</td>
+            <td>
+                @if (item.ExpectedChangePercent.HasValue)
+                {
+                    @item.ExpectedChangePercent.Value.ToString("0.0") @:% 
+                }
+            </td>
+            <td>
+                <img src="@item.OriginalImagePath" width="100" />
+            </td>
+            <td>
+                <img src="@item.GeneratedImagePath" width="100" />
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

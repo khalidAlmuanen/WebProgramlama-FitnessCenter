@@ -1,0 +1,78 @@
+@model FitnessCenterApp.Models.BodyTransformRequest
+
+@{
+    ViewData["Title"] = "Vücut Dönüşümü Sonucu";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (TempData["BodyTransformError"] is string errMsg)
+{
+    <div class="alert alert-warning">
+        @errMsg
+    </div>
+}
+
+<p>
+    Hedefiniz:
+    <strong>@Model.GoalType</strong>
+    (@Model.DurationMonths Ay)
+</p>
+
+@if (Model.StartWeightKg.HasValue)
+{
+    <p>
+        Başlangıç kilonuz:
+        <strong>@Model.StartWeightKg.Value.ToString("0.0") kg</strong>
+    </p>
+}
+
+@if (Model.ExpectedChangePercent.HasValue)
+{
+    <p>
+        Tahmini değişim oranı:
+        <strong>@Model.ExpectedChangePercent.Value.ToString("0.0") %</strong>
+    </p>
+}
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6 text-center">
+        <h4>Mevcut Görünüm</h4>
+        <img src="@Model.OriginalImagePath"
+             alt="Orijinal görüntü"
+             class="img-fluid"
+             style="max-height:500px;" />
+    </div>
+
+    <div class="col-md-6 text-center">
+        <h4>Tahmini Görünüm (Yapay Zekâ)</h4>
+
+        @if (!string.IsNullOrEmpty(Model.GeneratedImagePath))
+        {
+            <img src="@Model.GeneratedImagePath"
+                 alt="Yapay zekâ tahmini"
+                 class="img-fluid"
+                 style="max-height:500px;" />
+        }
+        else
+        {
+            <p class="text-muted mt-3">
+                Yapay zekâ tahmini şu anda oluşturulamadı.
+            </p>
+        }
+    </div>
+</div>
+
+<a asp-action="Create"
+   asp-controller="BodyTransform"
+   class="btn btn-primary mt-3">
+    Yeni Dönüşüm Hesapla
+</a>
+
+<a asp-action="MyRequests"
+   asp-controller="BodyTransform"
+   class="btn btn-outline-secondary mt-3 ms-2">
+    Geçmiş İsteklerim
+</a>

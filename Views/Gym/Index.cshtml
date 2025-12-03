@@ -1,0 +1,60 @@
+@model IEnumerable<FitnessCenterApp.Models.Gym>
+
+@{
+    ViewData["Title"] = "Spor Salonları";
+}
+
+<h2 class="mb-3">Spor Salonları</h2>
+
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">
+            + Yeni Spor Salonu Ekle
+        </a>
+    </p>
+}
+
+<table class="table table-striped table-hover align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>Adı</th>
+            <th>Konum</th>
+            <th>Açılış Saati</th>
+            <th>Kapanış Saati</th>
+            <th style="width: 220px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Location</td>
+                <td>@item.OpeningTime</td>
+                <td>@item.ClosingTime</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id"
+                       class="btn btn-sm btn-info text-white">Detay</a>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Düzenle</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Sil</a>
+                    }
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="5" class="text-center text-muted">
+                Kayıtlı spor salonu bulunmamaktadır.
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

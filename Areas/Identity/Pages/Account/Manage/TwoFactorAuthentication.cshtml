@@ -1,0 +1,83 @@
+﻿@page
+@using Microsoft.AspNetCore.Http.Features
+@model TwoFactorAuthenticationModel
+@{
+    ViewData["Title"] = "İki Adımlı Doğrulama";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<h3>@ViewData["Title"]</h3>
+
+@{
+    var consentFeature = HttpContext.Features.Get<ITrackingConsentFeature>();
+
+    @if (consentFeature?.CanTrack ?? true)
+    {
+        @if (Model.Is2faEnabled)
+        {
+            if (Model.RecoveryCodesLeft == 0)
+            {
+                <div class="alert alert-danger">
+                    <strong>Hiç kurtarma kodunuz kalmadı.</strong>
+                    <p>Bir kurtarma koduyla giriş yapabilmeden önce 
+                        <a asp-page="./GenerateRecoveryCodes">yeni kurtarma kodları oluşturmanız</a> gerekir.</p>
+                </div>
+            }
+            else if (Model.RecoveryCodesLeft == 1)
+            {
+                <div class="alert alert-danger">
+                    <strong>1 adet kurtarma kodunuz kaldı.</strong>
+                    <p><a asp-page="./GenerateRecoveryCodes">Yeni bir kurtarma kodu seti oluşturabilirsiniz</a>.</p>
+                </div>
+            }
+            else if (Model.RecoveryCodesLeft <= 3)
+            {
+                <div class="alert alert-warning">
+                    <strong>@Model.RecoveryCodesLeft adet kurtarma kodunuz kaldı.</strong>
+                    <p><a asp-page="./GenerateRecoveryCodes">Yeni bir kurtarma kodu seti oluşturmanız önerilir</a>.</p>
+                </div>
+            }
+
+            if (Model.IsMachineRemembered)
+            {
+                <form method="post" style="display: inline-block">
+                    <button type="submit" class="btn btn-primary">Bu tarayıcıyı unut</button>
+                </form>
+            }
+
+            <a asp-page="./Disable2fa" class="btn btn-primary">2FA'yı Devre Dışı Bırak</a>
+            <a asp-page="./GenerateRecoveryCodes" class="btn btn-primary">Kurtarma Kodlarını Sıfırla</a>
+        }
+
+        <h4>Doğrulayıcı Uygulaması</h4>
+
+        @if (!Model.HasAuthenticator)
+        {
+            <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">
+                Doğrulayıcı uygulaması ekle
+            </a>
+        }
+        else
+        {
+            <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">
+                Doğrulayıcı uygulamasını ayarla
+            </a>
+            <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-primary">
+                Doğrulayıcı uygulamasını sıfırla
+            </a>
+        }
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <strong>Gizlilik ve çerez politikası kabul edilmedi.</strong>
+            <p>İki adımlı doğrulamayı etkinleştirmeden önce politikayı kabul etmelisiniz.</p>
+        </div>
+    }
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

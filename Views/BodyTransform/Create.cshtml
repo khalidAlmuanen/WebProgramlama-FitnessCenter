@@ -1,0 +1,60 @@
+@model FitnessCenterApp.Models.ViewModels.BodyTransformCreateViewModel
+
+@{
+    ViewData["Title"] = "Vücut Dönüşüm Tahmini";
+}
+
+<h2 class="mb-3">@ViewData["Title"]</h2>
+<p class="text-muted">
+    Hedefinizi, süreyi ve başlangıç kilonuzu girin, ardından vücut fotoğrafınızı yükleyin.
+</p>
+
+<hr />
+
+<form asp-action="Create"
+      asp-controller="BodyTransform"
+      method="post"
+      enctype="multipart/form-data">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="GoalType" class="form-label">Hedefiniz</label>
+        <select asp-for="GoalType" class="form-select">
+            <option value="">-- Hedef Seçiniz --</option>
+            <option value="Kilo verme">Kilo verme</option>
+            <option value="Kas artırma">Kas artırma</option>
+            <option value="Form koruma">Form koruma</option>
+        </select>
+        <span asp-validation-for="GoalType" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DurationMonths" class="form-label">Tahmini Süre (Ay)</label>
+        <input asp-for="DurationMonths" class="form-control" />
+        <span asp-validation-for="DurationMonths" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="StartWeightKg" class="form-label">Başlangıç Kilonuz (kg)</label>
+        <input asp-for="StartWeightKg" class="form-control" />
+        <span asp-validation-for="StartWeightKg" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ImageFile" class="form-label">Vücut Fotoğrafınız</label>
+        <input asp-for="ImageFile" type="file" class="form-control" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Dönüşümü Hesapla</button>
+    <a asp-action="MyRequests"
+       asp-controller="BodyTransform"
+       class="btn btn-outline-secondary ms-2">
+        Geçmiş İsteklerim
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

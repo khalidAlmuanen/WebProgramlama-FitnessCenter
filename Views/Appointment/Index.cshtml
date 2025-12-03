@@ -1,0 +1,72 @@
+@model IEnumerable<FitnessCenterApp.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Randevular";
+}
+
+<h2>Randevular</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Yeni Randevu Oluştur</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Tarih</th>
+            <th>Saat</th>
+            <th>Spor Salonu</th>
+            <th>Antrenör</th>
+            <th>Hizmet</th>
+            <th>Üye</th>
+            <th>Durum</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+        <tr>
+            <td>@item.Date.ToString("dd.MM.yyyy")</td>
+            <td>@item.StartTime.ToString(@"hh\:mm") - @item.EndTime.ToString(@"hh\:mm")</td>
+            <td>@item.Trainer?.Gym?.Name</td>
+            <td>@item.Trainer?.FullName</td>
+            <td>@item.Service?.Name</td>
+            <td>@item.Member?.Email</td>
+            <td>
+                @switch (item.Status)
+                {
+                    case FitnessCenterApp.Models.AppointmentStatus.Pending:
+                        @:<span class="badge bg-warning text-dark">Beklemede</span>
+                        break;
+                    case FitnessCenterApp.Models.AppointmentStatus.Approved:
+                        @:<span class="badge bg-success">Onaylandı</span>
+                        break;
+                    case FitnessCenterApp.Models.AppointmentStatus.Rejected:
+                        @:<span class="badge bg-danger">Reddedildi</span>
+                        break;
+                }
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info me-1">Detay</a>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning me-1">Düzenle</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger me-1">Sil</a>
+
+                    if (item.Status == FitnessCenterApp.Models.AppointmentStatus.Pending)
+                    {
+                        <form asp-action="Approve" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-success me-1">Onayla</button>
+                        </form>
+                        <form asp-action="Reject" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-outline-warning">Reddet</button>
+                        </form>
+                    }
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

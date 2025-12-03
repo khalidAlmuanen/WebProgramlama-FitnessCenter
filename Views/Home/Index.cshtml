@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    if (User.IsInRole("Admin"))
+    {
+        <div class="text-center mt-5">
+            <h1 class="display-4">Yönetim Paneline Hoşgeldiniz</h1>
+            <p>Salonları, Hizmetleri, Eğitmenleri ve Randevuları buradan yönetin.</p>
+
+            <div class="mt-4">
+                <a asp-controller="Gym" asp-action="Index" class="btn btn-primary m-1">Spor Salonları</a>
+                <a asp-controller="Service" asp-action="Index" class="btn btn-primary m-1">Hizmetler</a>
+                <a asp-controller="Trainers" asp-action="Index" class="btn btn-primary m-1">Eğitmenler</a>
+                <a asp-controller="Appointment" asp-action="Index" class="btn btn-primary m-1">Randevular</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-center mt-5">
+            <h1 class="display-4">Fitness Center Uygulamasına Hoşgeldiniz</h1>
+            <p>Size uygun hizmeti ve antrenörü seçip kolayca randevu alabilirsiniz.</p>
+
+            <div class="mt-4">
+                <a asp-controller="Appointment" asp-action="Create" class="btn btn-success m-1">
+                    Randevu Al
+                </a>
+                <a asp-controller="Service" asp-action="Index" class="btn btn-outline-primary m-1">
+                    Hizmetleri Gör
+                </a>
+                <a asp-controller="Gym" asp-action="Index" class="btn btn-outline-primary m-1">
+                    Spor Salonlarını Gör
+                </a>
+                <a asp-controller="Appointment" asp-action="MyAppointments" class="btn btn-outline-secondary m-1">
+                    Randevularım
+                   </a> 
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="text-center mt-5">
+        <h1 class="display-4">Hoşgeldiniz Fitness Center Uygulamasına</h1>
+        <p>Randevu almak için önce kayıt olun veya giriş yapın.</p>
+        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary m-1">Kayıt Ol</a>
+        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-primary m-1">Giriş Yap</a>
+    </div>
+}

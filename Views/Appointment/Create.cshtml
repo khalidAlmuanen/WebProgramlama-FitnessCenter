@@ -1,0 +1,149 @@
+@model FitnessCenterApp.Models.Appointment
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Yeni Randevu Oluştur";
+    var slots = ViewBag.Slots as List<string> ?? new List<string>();
+}
+
+<h2>Yeni Randevu Oluştur</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label class="form-label">Spor Salonu</label>
+        <select name="gymId" id="GymId" class="form-select" asp-items="ViewBag.GymId">
+            <option value="">Spor salonu seçiniz</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TrainerId" class="form-label"></label>
+        <select asp-for="TrainerId" id="TrainerId" class="form-select" asp-items="ViewBag.TrainerId">
+            <option value="">Antrenör seçiniz</option>
+        </select>
+        <span asp-validation-for="TrainerId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ServiceId" class="form-label"></label>
+        <select asp-for="ServiceId" id="ServiceId" class="form-select" asp-items="ViewBag.ServiceId">
+            <option value="">Hizmet seçiniz</option>
+        </select>
+        <span asp-validation-for="ServiceId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Date" class="form-label"></label>
+        <input asp-for="Date" id="Date" class="form-control" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+
+        <small class="text-muted d-block mt-2">Hızlı seçim (önümüzdeki günler):</small>
+
+        <div class="mt-1" id="QuickDates">
+            @{
+                var tr = new CultureInfo("tr-TR");
+            }
+            @for (int i = 0; i < 7; i++)
+            {
+                var d = DateTime.Today.AddDays(i);
+                var value = d.ToString("yyyy-MM-dd");     
+                var text = d.ToString("dd.MM dddd", tr);
+
+                <button type="button" class="btn btn-outline-secondary btn-sm me-1 mb-1" data-date="@value">@text</button>
+            }
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Uygun Saatler</label>
+        <select id="SlotSelect" class="form-select">
+            <option value="">Saat seçiniz</option>
+            @foreach (var s in slots)
+            {
+                <option value="@s">@s</option>
+            }
+        </select>
+        <small class="form-text text-muted">
+            Önce spor salonu, antrenör, hizmet ve tarihi seçin. Uygun saatler burada görünecek.
+        </small>
+    </div>
+
+    <input asp-for="StartTime" id="StartTime" type="hidden" />
+    <input asp-for="EndTime" id="EndTime" type="hidden" />
+
+    <div class="mb-3">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        function reloadWithFilters() {
+            var baseUrl = '@Url.Action("Create", "Appointment")';
+            var gymId = document.getElementById("GymId").value;
+            var trainerId = document.getElementById("TrainerId").value;
+            var serviceId = document.getElementById("ServiceId").value;
+            var date = document.getElementById("Date").value;
+
+            var params = [];
+            if (gymId) params.push("gymId=" + encodeURIComponent(gymId));
+            if (trainerId) params.push("trainerId=" + encodeURIComponent(trainerId));
+            if (serviceId) params.push("serviceId=" + encodeURIComponent(serviceId));
+            if (date) params.push("date=" + encodeURIComponent(date));
+
+            var url = baseUrl;
+            if (params.length > 0) {
+                url += "?" + params.join("&");
+            }
+            window.location.href = url;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var gym = document.getElementById("GymId");
+            var trainer = document.getElementById("TrainerId");
+            var service = document.getElementById("ServiceId");
+            var date = document.getElementById("Date");
+            var slotSelect = document.getElementById("SlotSelect");
+
+            if (gym) gym.addEventListener("change", reloadWithFilters);
+            if (trainer) trainer.addEventListener("change", reloadWithFilters);
+            if (service) service.addEventListener("change", reloadWithFilters);
+            if (date) date.addEventListener("change", reloadWithFilters);
+
+            var quickButtons = document.querySelectorAll("#QuickDates button[data-date]");
+            quickButtons.forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    var val = this.getAttribute("data-date"); 
+                    document.getElementById("Date").value = val;
+                    reloadWithFilters();
+                });
+            });
+
+            if (slotSelect) {
+                slotSelect.addEventListener("change", function () {
+                    var val = this.value; 
+                    if (!val) {
+                        document.getElementById("StartTime").value = "";
+                        document.getElementById("EndTime").value = "";
+                        return;
+                    }
+
+                    var parts = val.split("-");
+                    if (parts.length === 2) {
+                        document.getElementById("StartTime").value = parts[0];
+                        document.getElementById("EndTime").value = parts[1];
+                    }
+                });
+            }
+        });
+    </script>
+}

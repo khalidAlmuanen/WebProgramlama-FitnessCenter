@@ -1,0 +1,56 @@
+@model FitnessCenterApp.Models.ViewModels.MemberProfileViewModel
+
+@{
+    ViewData["Title"] = "Profilim";
+}
+
+<h1>Profilim</h1>
+
+@if (TempData["ProfileSaved"] is string msg)
+{
+    <div class="alert alert-success">@msg</div>
+}
+
+<form asp-action="Index" method="post" class="mt-3">
+
+    <div class="mb-3">
+        <label asp-for="HeightCm" class="form-label"></label>
+        <input asp-for="HeightCm" class="form-control" />
+        <span asp-validation-for="HeightCm" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="WeightKg" class="form-label"></label>
+        <input asp-for="WeightKg" class="form-control" />
+        <span asp-validation-for="WeightKg" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="GoalType" class="form-label"></label>
+        <select asp-for="GoalType" class="form-select">
+            <option value="">-- Hedef Seçiniz --</option>
+            <option value="Kilo verme">Kilo verme</option>
+            <option value="Kas artırma">Kas artırma</option>
+            <option value="Form koruma">Form koruma</option>
+        </select>
+        <span asp-validation-for="GoalType" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="WorkoutsPerWeek" class="form-label"></label>
+        <input asp-for="WorkoutsPerWeek" class="form-control" />
+        <span asp-validation-for="WorkoutsPerWeek" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

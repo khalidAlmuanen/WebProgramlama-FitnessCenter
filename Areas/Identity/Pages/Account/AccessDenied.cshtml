@@ -1,0 +1,20 @@
+﻿@page
+@model Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal.AccessDeniedModel
+@{
+    ViewData["Title"] = "Erişim Engellendi";
+}
+
+<div class="text-center mt-5">
+    <h1 class="text-danger">Erişim engellendi</h1>
+    <p class="text-danger">
+        Bu kaynağa erişim izniniz yok.
+    </p>
+
+    <p>
+        Eğer bunun bir hata olduğunu düşünüyorsanız, sistem yöneticisi ile iletişime geçin.
+    </p>
+
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">
+        Ana sayfaya dön
+    </a>
+</div>

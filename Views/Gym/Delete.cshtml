@@ -1,0 +1,36 @@
+@model FitnessCenterApp.Models.Gym
+
+@{
+    ViewData["Title"] = "Spor Salonunu Sil";
+}
+
+<h2>Spor Salonunu Sil</h2>
+
+<h5 class="text-danger mt-3">Bu spor salonunu silmek istediğinizden emin misiniz?</h5>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Salon Adı</dt>
+            <dd class="col-sm-9">@Model.Name</dd>
+
+            <dt class="col-sm-3">Konum</dt>
+            <dd class="col-sm-9">@Model.Location</dd>
+
+            <dt class="col-sm-3">Açıklama</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+
+            <dt class="col-sm-3">Açılış Saati</dt>
+            <dd class="col-sm-9">@Model.OpeningTime</dd>
+
+            <dt class="col-sm-3">Kapanış Saati</dt>
+            <dd class="col-sm-9">@Model.ClosingTime</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">Sil</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </form>
+    </div>
+</div>
